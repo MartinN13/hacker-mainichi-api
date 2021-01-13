@@ -1,0 +1,6 @@
+.serverless/
+dist/
+node_modules/
+
+.env
+tsconfig.tsbuildinfo

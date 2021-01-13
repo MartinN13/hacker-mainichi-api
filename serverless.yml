@@ -1,0 +1,46 @@
+custom:
+  jetpack:
+    trace:
+      allowMissing:
+        node-fetch:
+          - encoding
+      ignores:
+        - aws-sdk
+
+functions:
+  createOrUpdateTable:
+    handler: dist/handlers/createOrUpdateTable.handler
+
+  savePosts:
+    events:
+      # 毎日JST 00:01に更新します。Lambdaの実行環境がUTCなのでUTC 15:01に設定。
+      - schedule: cron(1 15 * * * *)
+    handler: dist/handlers/savePosts.handler
+
+package:
+  exclude:
+    - dist/tsconfig.tsbuildinfo
+    - node_modules/aws-sdk/**
+    - src/**
+    - .env
+    - .prettierignore
+    - .prettierrc.json
+    - dev.ts
+    - package-lock.json
+    - package.json
+    - tsconfig.json
+    - tsconfig.tsbuildinfo
+
+plugins:
+  - serverless-jetpack
+
+provider:
+  environment:
+    NODE_OPTIONS: --enable-source-maps
+    TABLE_NAME: ${env:TABLE_NAME}
+  name: aws
+  region: ap-northeast-1
+  runtime: nodejs12.x
+  timeout: 900
+
+service: hacker-news-mainichi

@@ -1,0 +1,24 @@
+{
+  "author": "Martin Nabhan",
+  "dependencies": {
+    "@types/dotenv-safe": "^8.1.1",
+    "@types/node-fetch": "^2.5.7",
+    "aws-sdk": "^2.825.0",
+    "dotenv-safe": "^8.2.0",
+    "node-fetch": "^2.6.1",
+    "prettier": "^2.2.1",
+    "serverless": "^2.18.0",
+    "serverless-jetpack": "^0.10.7",
+    "tsc-watch": "^4.2.9",
+    "typescript": "^4.1.3"
+  },
+  "description": "１日単位で見れるHacker News",
+  "license": "MIT",
+  "name": "hacker-mainichi-api",
+  "scripts": {
+    "build": "rm -rf ./dist/* && tsc",
+    "dev": "NODE_ENV=development tsc-watch --noClear --onSuccess \"node --enable-source-maps ./dev.js\"",
+    "fix": "prettier --write ."
+  },
+  "version": "1.0.0"
+}
