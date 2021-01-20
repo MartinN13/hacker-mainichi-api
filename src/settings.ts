@@ -1,19 +1,5 @@
-import { config as dotenv } from 'dotenv-safe';
-import { config as awsConfig } from 'aws-sdk';
+export const dev = process.env.NODE_ENV === 'development';
 
-dotenv();
-
-export const TableName = process.env.TABLE_NAME as string;
-
-if (process.env.NODE_ENV === 'development') {
-  awsConfig.update({
-    credentials: {
-      accessKeyId: 'key',
-      secretAccessKey: 'key',
-    },
-    dynamodb: {
-      endpoint: 'http://localhost:8000',
-    },
-    region: 'us-east-1',
-  });
-}
+export const Bucket = dev ? 'hacker-mainichi' : (process.env.S3_DATA_BUCKET_NAME as string);
+export const DATE = process.env.DATE;
+export const TableName = dev ? 'hacker-mainichi' : (process.env.DYNAMO_DB_TABLE_NAME as string);
