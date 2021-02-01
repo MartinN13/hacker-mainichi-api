@@ -1,5 +1,9 @@
-export const dev = process.env.NODE_ENV === 'development';
+import env from 'env-var';
 
-export const Bucket = dev ? 'hacker-mainichi' : (process.env.S3_DATA_BUCKET_NAME as string);
-export const DATE = process.env.DATE;
-export const TableName = dev ? 'hacker-mainichi' : (process.env.DYNAMO_DB_TABLE_NAME as string);
+env.get('NODE_OPTIONS').required();
+env.get('TZ').required();
+
+export const isDevelopment = env.get('NODE_ENV').asString() === 'development';
+export const Bucket = isDevelopment ? 'hacker-mainichi' : env.get('S3_DATA_BUCKET_NAME').required().asString();
+export const DATE = env.get('DATE').asString();
+export const TableName = isDevelopment ? 'hacker-mainichi' : env.get('DYNAMO_DB_TABLE_NAME').required().asString();

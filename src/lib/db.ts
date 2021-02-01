@@ -1,5 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
-import { dev, TableName } from '../settings';
+import { isDevelopment, TableName } from '../settings';
 
 interface Story {
   id: number;
@@ -24,8 +24,8 @@ const devOptions = {
   region: 'us-east-1',
 };
 
-const client = new DynamoDB.DocumentClient(dev ? devOptions : undefined);
-const dynamoDB = new DynamoDB(dev ? devOptions : undefined);
+const client = new DynamoDB.DocumentClient(isDevelopment ? devOptions : undefined);
+const dynamoDB = new DynamoDB(isDevelopment ? devOptions : undefined);
 
 const db = {
   batchWrite: async ({ stories }: { stories: DBStory[] }) => {
