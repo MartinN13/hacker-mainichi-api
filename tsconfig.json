@@ -2,6 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "incremental": true,
+    "isolatedModules": true,
     "module": "CommonJS",
     "sourceMap": true,
     "strict": true,

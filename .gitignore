@@ -1,9 +1,5 @@
-.serverless/
+cdk.out/
 dist/
 node_modules/
 s3/hacker-mainichi/*
-
 !s3/hacker-mainichi/.gitkeep
-.env
-tsconfig.tsbuildinfo
-
