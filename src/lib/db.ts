@@ -25,10 +25,29 @@ const devOptions = {
 };
 
 const client = new DynamoDB.DocumentClient(isDevelopment ? devOptions : undefined);
-const dynamoDB = new DynamoDB(isDevelopment ? devOptions : undefined);
 
 const db = {
-  batchWrite: async ({ stories }: { stories: DBStory[] }) => {
+  createTable: async () => {
+    console.log(`Creating table ${TableName}...`);
+
+    await new DynamoDB(devOptions)
+      .createTable({
+        AttributeDefinitions: [
+          { AttributeName: 'date', AttributeType: 'S' },
+          { AttributeName: 'id', AttributeType: 'N' },
+        ],
+        BillingMode: 'PAY_PER_REQUEST',
+        KeySchema: [
+          { AttributeName: 'date', KeyType: 'HASH' },
+          { AttributeName: 'id', KeyType: 'RANGE' },
+        ],
+        TableName,
+      })
+      .promise();
+
+    console.log(`Created table ${TableName}.`);
+  },
+  saveStories: async ({ stories }: { stories: DBStory[] }) => {
     console.log(`Batch writing ${stories.length} stories...`);
 
     const storyChunks: DBStory[][] = [];
@@ -54,46 +73,6 @@ const db = {
     );
 
     console.log(`Batch wrote ${stories.length} stories.`);
-  },
-  createTable: async () => {
-    console.log(`Creating table ${TableName}...`);
-
-    await dynamoDB
-      .createTable({
-        AttributeDefinitions: [
-          { AttributeName: 'date', AttributeType: 'S' },
-          { AttributeName: 'id', AttributeType: 'N' },
-        ],
-        BillingMode: 'PAY_PER_REQUEST',
-        KeySchema: [
-          { AttributeName: 'date', KeyType: 'HASH' },
-          { AttributeName: 'id', KeyType: 'RANGE' },
-        ],
-        TableName,
-      })
-      .promise();
-
-    console.log(`Created table ${TableName}.`);
-  },
-  stories: async ({ date }: { date: string }) => {
-    const result = await client
-      .query({
-        ExpressionAttributeNames: {
-          '#by': 'by',
-          '#date': 'date',
-        },
-        ExpressionAttributeValues: {
-          ':date': date,
-        },
-        KeyConditionExpression: '#date = :date',
-        ProjectionExpression: 'id, #by, comments, score, title',
-        TableName,
-      })
-      .promise();
-
-    const stories = result.Items as Story[];
-
-    return stories;
   },
 };
 

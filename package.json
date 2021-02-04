@@ -5,7 +5,7 @@
     "@aws-cdk/aws-events": "^1.87.1",
     "@aws-cdk/aws-events-targets": "^1.87.1",
     "@aws-cdk/aws-lambda-nodejs": "^1.87.1",
-    "@aws-cdk/aws-s3": "^1.87.1",
+    "@aws-cdk/aws-logs": "^1.88.0",
     "@aws-cdk/core": "^1.87.1",
     "@types/async-retry": "^1.4.2",
     "@types/node-fetch": "^2.5.8",
@@ -25,23 +25,19 @@
     "dynamodb-admin": "^4.0.0",
     "dynamodb-local": "0.0.31",
     "nodemon": "^2.0.7",
-    "run-func": "^1.0.5",
-    "s3rver": "^3.6.1"
+    "run-func": "^1.0.5"
   },
   "description": "１日単位で見れるHacker News",
   "license": "MIT",
   "name": "hacker-mainichi-api",
   "scripts": {
-    "bootstrap": "cdk bootstrap HackerMainichiAPI",
-    "build:exportStories": "esbuild src/handlers/exportStories.ts --bundle --outfile=dist/exportStories.js --platform=node --sourcemap --target=node12.19.0",
-    "build:saveStories": "esbuild src/handlers/saveStories.ts --bundle --outfile=dist/saveStories.js --platform=node --sourcemap --target=node12.19.0",
+    "bootstrap": "cdk bootstrap",
+    "build": "rm -rf dist/* && esbuild src/api.saveStories.ts --bundle --outfile=dist/saveStories.js --platform=node --sourcemap --target=node12.19.0",
     "deploy": "cdk deploy HackerMainichiAPI",
-    "dev:exportStories": "NODE_ENV=development NODE_OPTIONS=--enable-source-maps TZ=Asia/Tokyo nodemon --ext ts --watch src --exec \"npm run build:exportStories && run-func ./dist/exportStories.js handler\"",
-    "dev:saveStories": "NODE_ENV=development NODE_OPTIONS=--enable-source-maps TZ=Asia/Tokyo nodemon --ext ts --watch src --exec \"npm run build:saveStories && run-func ./dist/saveStories.js handler\"",
+    "dev": "NODE_ENV=development NODE_OPTIONS=--enable-source-maps TZ=Asia/Tokyo nodemon --ext ts --watch src --exec \"npm run build && run-func dist/saveStories.js handler\"",
     "diff": "cdk diff HackerMainichiAPI",
     "dynamodb": "concurrently dynamodb-admin dynamodb-local",
-    "fix": "prettier --write . && tsc --noEmit",
-    "s3": "s3rver --directory ./s3/ --configure-bucket hacker-mainichi ./s3/cors.xml"
+    "fix": "prettier --write . && tsc --noEmit"
   },
   "version": "1.0.0"
 }
