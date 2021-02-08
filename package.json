@@ -30,6 +30,7 @@
   "description": "１日単位で見れるHacker News",
   "license": "MIT",
   "name": "hacker-mainichi-api",
+  "repository": "https://github.com/martinnabhan/hacker-mainichi-api",
   "scripts": {
     "bootstrap": "cdk bootstrap",
     "build": "rm -rf dist/* && esbuild src/api.saveStories.ts --bundle --outfile=dist/saveStories.js --platform=node --sourcemap --target=node12.19.0",
