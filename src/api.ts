@@ -4,12 +4,13 @@ import { LambdaFunction } from '@aws-cdk/aws-events-targets';
 import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
 import { RetentionDays } from '@aws-cdk/aws-logs';
 import { App, Duration, RemovalPolicy, Stack } from '@aws-cdk/core';
-import { TableName as tableName } from './settings';
+import { TableName as tableName, VERCEL_DEPLOY_HOOK_URL } from './settings';
 
 const environment = {
   DYNAMO_DB_TABLE_NAME: tableName,
   NODE_OPTIONS: '--enable-source-maps',
   TZ: 'Asia/Tokyo',
+  VERCEL_DEPLOY_HOOK_URL,
 };
 
 class API extends Stack {
